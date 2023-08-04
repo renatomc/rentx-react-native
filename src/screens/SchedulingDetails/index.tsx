@@ -3,6 +3,11 @@ import { useTheme } from 'styled-components';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
+import { format } from 'date-fns';
+import { getPlataformDate } from '../../utils/getPlataformDate';
+import api from '../../services/api';
+import { Alert } from 'react-native';
 import { CarDTO } from '../../dtos/CarDTO';
 
 import { BackButton } from '../../components/BackButton';
@@ -35,9 +40,7 @@ import {
   RentalPriceQuota,
   RentalPriceTotal,
 } from './styles';
-import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
-import { format } from 'date-fns';
-import { getPlataformDate } from '../../utils/getPlataformDate';
+
 
 
 interface Params {
@@ -63,9 +66,27 @@ export function SchedulingDetails() {
   }, [dates, car]);
 
 
-  function handleConfirm(){
-    //@ts-expect-error
-    navigation.navigate('SchedulingComplete');
+  async function handleConfirm(){
+    const shedulesByCar = await api.get(`/schedules/${car.id}`);
+
+    const unavailable_dates = [
+      ...shedulesByCar.data.unavailable_dates,
+      ...dates,
+    ];
+
+    api.put(`/schedules/${car.id}`, {
+      id: car.id,
+      unavailable_dates
+      
+    }).then((res) => {
+      console.log({ res });
+      //@ts-expect-error
+      navigation.navigate('SchedulingComplete');
+    })
+    .catch((err) => {
+      console.log({ err });
+      Alert.alert("Não foi possível confirmar o agendamento.");
+    });
   }
 
   function handleBack(){
