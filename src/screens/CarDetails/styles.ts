@@ -17,7 +17,7 @@ export const Header = styled.View`
 `;
 
 export const CarImages = styled.View`
-  margin-top: ${getStatusBarHeight() + 32}px;
+  margin-top: ${getStatusBarHeight() + 42}px;
 `;
 
 export const Content = styled.ScrollView.attrs({
