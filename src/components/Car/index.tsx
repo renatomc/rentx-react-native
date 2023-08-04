@@ -22,8 +22,8 @@ import { getAccessoryIcon } from '../../utils/getAccessoryIcon';
  }
 
 export function Car({ data, ...rest }: Props) {
-  console.log({data})
   const MotorIcon = getAccessoryIcon(data.fuel_type);
+  
   return (
     <Container {...rest}>
       <Details>

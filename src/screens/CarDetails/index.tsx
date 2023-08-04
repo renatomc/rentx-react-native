@@ -29,10 +29,6 @@ interface Params {
   car: CarDTO;
 }
 
-const accessoriesIcons = {
-
-}
-
 export function CarDetails() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -40,7 +36,7 @@ export function CarDetails() {
 
   function handleConfirmRental(){
     //@ts-expect-error
-    navigation.navigate('Scheduling');
+    navigation.navigate('Scheduling', { car });
   }
 
   function handleBack(){
