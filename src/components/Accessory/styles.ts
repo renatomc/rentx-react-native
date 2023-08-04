@@ -14,5 +14,6 @@ export const Container = styled.View`
 export const Name = styled.Text`
   font-family: ${({ theme }) => theme.fonts.primary_500};
   color: ${({ theme }) => theme.colors.text};
-  font-size: ${RFValue(13)}px;
+  font-size: ${RFValue(12)}px;
+  text-align: center;
 `;
