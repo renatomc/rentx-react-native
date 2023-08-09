@@ -7,6 +7,7 @@ import api from '../../services/api';
 import { FlatList, StatusBar } from 'react-native';
 import { BackButton } from '../../components/BackButton';
 import { Car } from '../../components/Car';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 import { 
   Container,
@@ -23,7 +24,7 @@ import {
   CarFotterPeriod,
   CarFooterDate,
 } from './styles';
-import { Load } from '../../components/Load';
+
 
 interface CarProps {
   id: string;
@@ -69,14 +70,14 @@ export function MyCars() {
       <Header>
         <BackButton onPress={handleBack} color={theme.colors.shape} />
         <Title>
-          Escolha uma {'\n'} data de início e {'\n'} fim do aluguel
+          Histórico
         </Title>
         <SubTitle>
-          Conforto, segurança e praticidade.
+          Detalhes de agendamentos
         </SubTitle>
       </Header>
       {loading ? (
-        <Load />
+        <LoadAnimation />
       ) : (
         <Content>
         <Appointments>

@@ -8,7 +8,7 @@ import Logo from '../../assets/logo.svg';
 import api from '../../services/api';
 import { Car } from '../../components/Car';
 import { CarDTO } from '../../dtos/CarDTO';
-import { Load } from '../../components/Load';
+import { LoadAnimation } from '../../components/LoadAnimation';
 import { useTheme } from 'styled-components';
 import Animated, { 
   useAnimatedGestureHandler, 
@@ -107,7 +107,7 @@ export function Home() {
         </HeaderContent>
      </Header>
      {loading ? (
-        <Load />
+        <LoadAnimation />
       ) : (
         <CarList
           data={cars}
