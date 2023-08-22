@@ -7,10 +7,13 @@ import { TextInputProps } from 'react-native';
 import { Container, IconContainer, InputText, ChangePasswordVisibilityButton } from './styles';
 
 interface InputProps extends TextInputProps {
-  iconName: React.ComponentProps<typeof Feather>['name']
+  iconName: React.ComponentProps<typeof Feather>['name'];
+  value?: string;
 }
 
-export function PasswordInput({ iconName, ...rest }) {
+export function PasswordInput({ iconName, value, ...rest }) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const theme = useTheme();
@@ -19,20 +22,29 @@ export function PasswordInput({ iconName, ...rest }) {
     setShowPassword(!showPassword);
   }
 
+  function handleInputFocus() {
+    setIsFocused(true);
+  }
+
+  function handleInputBlur() {
+    setIsFocused(false);
+    setIsFilled(!!value);
+  }
+
   return (
-    <Container>
+    <Container isFocused={isFocused}>
       <IconContainer>
         <Feather
           name={iconName}
           size={24}
-          color={theme.colors.text_detail}
+          color={(isFocused || isFilled) ? theme.colors.main : theme.colors.text_detail}
           />
       </IconContainer>
-      <InputText secureTextEntry={showPassword} {...rest} />
+      <InputText secureTextEntry={!showPassword} {...rest} onFocus={handleInputFocus} onBlur={handleInputBlur} />
       <ChangePasswordVisibilityButton onPress={handlePasswordVisibilityChange}>
         <IconContainer>
           <Feather
-            name={showPassword ? "eye" : "eye-off"}
+            name={!showPassword ? "eye" : "eye-off"}
             size={24}
             color={theme.colors.text_detail}
             />
