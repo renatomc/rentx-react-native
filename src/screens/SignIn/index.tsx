@@ -1,18 +1,50 @@
 import React, { useState } from 'react';
+import * as Yup from 'yup';
 
-import { StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { Button } from '../../components/Button';
 import { useTheme } from 'styled-components';
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
 
 import { Container, Header, Title, SubTitle, Footer, Form } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigation = useNavigation();
   const theme = useTheme();
+
+  async function handleSignIn() {
+    try {
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required('E-mail obrigatório')
+          .email('Digite um e-mail válido'),
+        password: Yup.string()
+          .required('A senha é obrigatória')
+      });
+  
+      await schema.validate({ email, password });
+      // @TODO
+      // Fazer o processo de login
+    } catch (error) {
+      if(error instanceof Yup.ValidationError) {
+        Alert.alert('Opa', error.message);
+      } else {
+        Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, verifique as credenciais');
+      }
+      console.log({error});
+    }
+  }
+
+  function handleNewAccount() {
+    // @ts-expect-error
+    navigation.navigate("FirstStep");
+
+  }
 
   return (
     <KeyboardAvoidingView
@@ -54,15 +86,15 @@ export function SignIn() {
           <Footer>
             <Button
               title='Login'
-              onPress={() => {}}
-              enabled={false}
+              onPress={handleSignIn}
+              enabled={true}
               loading={false}
             />
             <Button
               light
               title='Criar conta gratuita'
-              onPress={() => {}}
-              enabled={false}
+              onPress={handleNewAccount}
+              enabled={true}
               loading={false}
               color={theme.colors.background_secondary}
             />

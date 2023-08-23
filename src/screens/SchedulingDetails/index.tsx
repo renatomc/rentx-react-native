@@ -89,7 +89,12 @@ export function SchedulingDetails() {
     }).then((res) => {
       console.log({ res });
       //@ts-expect-error
-      navigation.navigate('SchedulingComplete');
+      navigation.navigate('Confirmation', {
+        title: 'Carro alugado!',
+        message: `Agora você só precisa ir ${'\n'}
+        até a concessionária da RENTX ${'\n'}
+        pegar o seu automóvel.`
+      });
     })
     .catch((err) => {
       console.log({ err });
