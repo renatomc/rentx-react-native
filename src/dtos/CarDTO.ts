@@ -1,11 +1,12 @@
 interface AccessoriesDTO {
+  id: string;
   type: string;
   name: string;
 };
 
-interface RentDTO {
-  period: string;
-  price: number;
+interface PhotosDTO {
+  id: string;
+  photo: string;
 }
 
 export interface CarDTO {
@@ -13,9 +14,10 @@ export interface CarDTO {
   brand: string;
   name: string;
   about: string;
-  rent: RentDTO;
+  period: string;
+  price: string;
   fuel_type: string;
   thumbnail: string;
   accessories: AccessoriesDTO[];
-  photos: string[];
+  photos: PhotosDTO[];
 }

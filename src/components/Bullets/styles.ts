@@ -10,5 +10,5 @@ export const ImageIndex = styled.View<ImageIndexProps>`
   background-color: ${({ theme, active }) => 
     active ? theme.colors.title : theme.colors.shape  
   };
-  border-radius: 50%;
+  border-radius: 3px;
 `;

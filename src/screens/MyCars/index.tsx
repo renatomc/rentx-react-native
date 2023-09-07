@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
-import { CarDTO } from '../../dtos/CarDTO';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import api from '../../services/api';
 import { FlatList, StatusBar } from 'react-native';
 import { BackButton } from '../../components/BackButton';
 import { Car } from '../../components/Car';
 import { LoadAnimation } from '../../components/LoadAnimation';
+import { Car as CarModel } from '../../database/model/Car';
 
 import { 
   Container,
@@ -24,20 +24,20 @@ import {
   CarFotterPeriod,
   CarFooterDate,
 } from './styles';
+import { useAuth } from '../../hooks/auth';
+import { format, parseISO } from 'date-fns';
 
-
-interface CarProps {
+interface DataProps {
   id: string;
-  user_id: string;
-  car: CarDTO;
-  start: string;
-  end: string;
+  car: CarModel;
+  start_date: string;
+  end_date: string;
 }
 
-
 export function MyCars() {
-  const [cars, setCars] = useState<CarProps[]>([] as CarProps[]);
+  const [cars, setCars] = useState<DataProps[]>([] as DataProps[]);
   const [loading, setLoading] = useState(true);
+  const isFocus = useIsFocused();
 
   const theme = useTheme();
   const navigation = useNavigation();
@@ -49,8 +49,16 @@ export function MyCars() {
   useEffect(() => {
     async function fetchCars(){
       try {
-        const response = await api.get('/schedules_byuser?user_id=1');
-        setCars(response.data);
+        const response = await api.get(`/rentals`);
+        const dataFormatted = response.data.map((data: DataProps) => {
+          return {
+            id: data.id,
+            car: data.car,
+            start_date: format(parseISO(data.start_date), 'dd/MM/yyyy'),
+            end_date: format(parseISO(data.end_date), 'dd/MM/yyyy'),
+          }
+        });
+        setCars(dataFormatted);
       } catch (error) {
         console.log({error});
       } finally {
@@ -58,7 +66,7 @@ export function MyCars() {
       }
     }
     fetchCars();
-  }, []);
+  }, [isFocus]);
 
   return (
     <Container>
@@ -95,7 +103,7 @@ export function MyCars() {
                 <CarFooterTitle>Período</CarFooterTitle>
                 <CarFotterPeriod>
                   <CarFooterDate>
-                    {item.start}
+                    {item.start_date}
                   </CarFooterDate>
                   <AntDesign
                     name="arrowright"
@@ -104,7 +112,7 @@ export function MyCars() {
                     style={{ marginHorizontal: 10 }}
                   />
                    <CarFooterDate>
-                    {item.end}
+                    {item.end_date}
                   </CarFooterDate>
                 </CarFotterPeriod>
               </CarFooter>

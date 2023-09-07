@@ -16,10 +16,6 @@ export const Header = styled.View`
   margin-left: 24px;
 `;
 
-export const CarImages = styled.View`
-  margin-top: ${getStatusBarHeight() + 42}px;
-`;
-
 export const Content = styled.ScrollView.attrs({
   contentContainerStyle: {
     padding: 24,
@@ -89,5 +85,12 @@ export const Footer = styled.View`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.background_secondary};
   padding: 24px 24px ${getBottomSpace() + 24}px;
+`;
+
+export const OfflineInfo = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.primary_400};
+  color: ${({ theme }) => theme.colors.main};
+  font-size: ${RFValue(10)}px;
+  text-align: center;
 `;
 

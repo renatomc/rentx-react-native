@@ -42,7 +42,7 @@ export function Splash() {
 
   function startApp() {
     // @ts-expect-error
-    navigation.navigate("Home");
+    navigation.navigate("SignIn");
   }
 
   useEffect(() => {
